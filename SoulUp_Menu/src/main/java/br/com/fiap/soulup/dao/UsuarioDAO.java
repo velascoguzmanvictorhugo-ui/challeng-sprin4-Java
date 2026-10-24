@@ -9,6 +9,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UsuarioDAO implements RepositorioUsuarios {
+private Connection conexao;
+
+public UsuarioDAO() {
+    this.conexao = new ConnectionFactory().getConnection();
+}
 
     @Override
     public void adicionar(Validador usuario) {
@@ -43,30 +48,15 @@ public class UsuarioDAO implements RepositorioUsuarios {
         }
         return lista;
     }
-
-
-    public void atualizar(Validador usuario) {
-        String sql = "UPDATE tb_usuario SET nome = ?, email = ? WHERE id_usuario = ?";
-        try (Connection conexao = new ConnectionFactory().getConnection();
-             PreparedStatement comando = conexao.prepareStatement(sql)) {
-            comando.setString(1, usuario.lerNome());
-            comando.setString(2, usuario.lerEmail());
-            comando.setInt(3, usuario.lerId());
-            comando.execute();
+    public void fecharConexao() {
+        try {
+            if (this.conexao != null && !this.conexao.isClosed()) {
+                this.conexao.close();
+            }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    public void excluir(int id) {
-        String sql = "DELETE FROM tb_usuario WHERE id_usuario = ?";
-        try (Connection conexao = new ConnectionFactory().getConnection();
-             PreparedStatement comando = conexao.prepareStatement(sql)) {
-            comando.setInt(1, id);
-            comando.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 }
+
+

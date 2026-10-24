@@ -16,7 +16,7 @@ public class EmpresaParceira {
         this.certificadosComDesconto = new ArrayList<>();
     }
 
-    // Metodos chamados no Main
+
     public String getNome() {
         return this.nome;
     }
