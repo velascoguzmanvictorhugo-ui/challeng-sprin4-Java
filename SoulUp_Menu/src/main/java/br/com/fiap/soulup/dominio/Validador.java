@@ -32,4 +32,20 @@ public class Validador extends Usuario {
     public String exibirPerfil() {
         return "Usuario: " + lerNome() + " (ID: " + lerId() + " | Email: " + lerEmail() + ") | Saldo: " + pontosAdquiridos + " pts";
     }
+
+    public int getId() {
+        return lerId();
+    }
+
+    public String getNome() {
+        return lerNome();
+    }
+
+    public String getEmail() {
+        return lerEmail();
+    }
+
+    public int getPontosAdquiridos() {
+        return this.pontosAdquiridos;
+    }
 }

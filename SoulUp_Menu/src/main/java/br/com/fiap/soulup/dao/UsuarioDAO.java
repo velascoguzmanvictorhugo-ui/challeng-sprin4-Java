@@ -9,10 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UsuarioDAO implements RepositorioUsuarios {
-private Connection conexao;
+
 
 public UsuarioDAO() {
-    this.conexao = new ConnectionFactory().getConnection();
 }
 
     @Override
@@ -47,15 +46,6 @@ public UsuarioDAO() {
             throw new RuntimeException(e);
         }
         return lista;
-    }
-    public void fecharConexao() {
-        try {
-            if (this.conexao != null && !this.conexao.isClosed()) {
-                this.conexao.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }
 
