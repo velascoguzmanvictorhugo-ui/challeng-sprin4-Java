@@ -22,7 +22,7 @@ public class GrupoDAO implements RepositorioGrupos {
     @Override
     public void adicionar(Grupo grupo) {
         String sql = "INSERT INTO tb_grupo (id_grupo, nome, data_criacao) " +
-                "VALUES ((SELECT NVL(MAX(id_grupo), 0) + 1 FROM tb_grupo), ?, ?)";
+                "SELECT NVL(MAX(id_grupo), 0) + 1, ?, ? FROM tb_grupo";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setString(1, grupo.getNome());
             LocalDate data = (grupo.getDataCriacao() != null) ? grupo.getDataCriacao() : LocalDate.now();
