@@ -19,4 +19,12 @@ public class UsuarioService {
     public void adicionar(Validador usuario) {
         repositorioUsuarios.adicionar(usuario);
     }
+    public void atualizar(Validador usuario) {
+        repositorioUsuarios.atualizar(usuario);
+    }
+
+
+    public void excluir(int id) {
+        repositorioUsuarios.excluir(id);
+    }
 }

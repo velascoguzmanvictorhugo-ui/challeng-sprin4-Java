@@ -47,6 +47,30 @@ public UsuarioDAO() {
         }
         return lista;
     }
+    public void atualizar(Validador usuario) {
+        String sql = "UPDATE tb_usuario SET nome = ?, email = ? WHERE id_usuario = ?";
+        try (Connection conexao = new ConnectionFactory().getConnection();
+             PreparedStatement comando = conexao.prepareStatement(sql)) {
+            comando.setString(1, usuario.lerNome());
+            comando.setString(2, usuario.lerEmail());
+            comando.setInt(3, usuario.lerId());
+            comando.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void excluir(int id) {
+        String sql = "DELETE FROM tb_usuario WHERE id_usuario = ?";
+        try (Connection conexao = new ConnectionFactory().getConnection();
+             PreparedStatement comando = conexao.prepareStatement(sql)) {
+            comando.setInt(1, id);
+            comando.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
 
 

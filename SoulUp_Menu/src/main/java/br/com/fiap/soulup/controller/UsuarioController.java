@@ -39,4 +39,17 @@ public class UsuarioController {
                     .body(e.getMessage());
         }
     }
-}
+
+        @PutMapping
+        public ResponseEntity<Validador> atualizar(@RequestBody Validador usuario) {
+            usuarioService.atualizar(usuario);
+            return ResponseEntity.ok(usuario);
+        }
+
+
+        @DeleteMapping
+        public ResponseEntity<Void> excluir(int id) {
+            usuarioService.excluir(id);
+            return ResponseEntity.noContent().build();
+        }
+    }

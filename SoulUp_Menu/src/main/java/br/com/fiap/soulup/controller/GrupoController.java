@@ -30,5 +30,18 @@ public class GrupoController {
         grupoService.salvar(grupo);
         return ResponseEntity.status(HttpStatus.CREATED).body(grupo);
     }
+    @PutMapping
+    public ResponseEntity<Grupo> atualizar(@RequestBody Grupo grupo) {
+        grupoService.atualizar(grupo);
+        return ResponseEntity.ok(grupo);
+    }
+
+
+    @DeleteMapping
+    public ResponseEntity<Void> excluir(int id) {
+        grupoService.excluir(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
+

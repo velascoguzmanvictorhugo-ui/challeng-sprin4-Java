@@ -56,6 +56,28 @@ public class GrupoDAO implements RepositorioGrupos {
         return lista;
     }
 
+    public void atualizar(Grupo grupo) {
+        String sql = "UPDATE tb_grupo SET nome = ? WHERE id_grupo = ?";
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setString(1, grupo.getNome());
+            stmt.setInt(2, grupo.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao atualizar grupo: " + e.getMessage());
+        }
+    }
+
+    public void excluir(int id) {
+        String sql = "DELETE FROM tb_grupo WHERE id_grupo = ?";
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao excluir grupo: " + e.getMessage());
+        }
+    }
+
+
     public ArrayList<Grupo> obterTodosGrupos() {
         return listarTodos();
     }
