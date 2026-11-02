@@ -1,48 +1,19 @@
 package br.com.fiap.soulup.dominio;
 
 public class DesafioPratico extends Desafio {
-    private int id;
-    private String descricao;
-    private String categoria;
 
-    public DesafioPratico(int id, String titulo, String descricao, int pontuacao, String categoria) {
-        super(titulo, pontuacao);
-        this.id = id;
-        this.descricao = descricao;
-        this.categoria = categoria;
+    public DesafioPratico() {
+        super();
     }
 
-    public int lerId() {
-        return id;
+    // Constructor completo con los 5 atributos
+    public DesafioPratico(int id, String titulo, String descricao, int pontos, String categoria) {
+        super(id, titulo, descricao, pontos, categoria);
     }
 
-    public String lerDescricao() {
-        return descricao;
-    }
-
-    public String lerCategoria() {
-        return categoria;
-    }
-
-    // Getters para el Front-End (JSON)
-    public int getId() {
-        return id;
-    }
-
-    public String getTitulo() {
-        return lerTitulo();
-    }
-
-    public int getPontos() {
-        return lerPontuacao();
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public String getCategoria() {
-        return categoria;
+    // Sobrecarga de conveniencia que autocompleta los 5 atributos si solo se envían título y puntos
+    public DesafioPratico(String titulo, int pontos) {
+        super(0, titulo, "Sem descricao", pontos, "Geral");
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class DesafioDAO implements RepositorioDesafios {
 
-    private Connection conexao;
+    private final Connection conexao;
 
     public DesafioDAO() {
         this.conexao = new ConnectionFactory().getConnection();
@@ -24,7 +24,7 @@ public class DesafioDAO implements RepositorioDesafios {
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setString(1, desafio.lerTitulo());
             stmt.setString(2, desafio.lerDescricao());
-            stmt.setInt(3, desafio.lerPontuacao());
+            stmt.setInt(3, desafio.lerPontos());
             stmt.setString(4, desafio.lerCategoria());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -41,14 +41,13 @@ public class DesafioDAO implements RepositorioDesafios {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                int id = rs.getInt("id_desafio");
-                String titulo = rs.getString("titulo");
-                String descricao = rs.getString("descricao");
-                int pontos = rs.getInt("pontos");
-                String categoria = rs.getString("categoria");
-
-                // Se instancia DesafioPratico, ya que Desafio es abstracta
-                DesafioPratico desafio = new DesafioPratico(id, titulo, descricao, pontos, categoria);
+                DesafioPratico desafio = new DesafioPratico(
+                        rs.getInt("id_desafio"),
+                        rs.getString("titulo"),
+                        rs.getString("descricao"),
+                        rs.getInt("pontos"),
+                        rs.getString("categoria")
+                );
                 lista.add(desafio);
             }
         } catch (SQLException e) {
@@ -63,7 +62,7 @@ public class DesafioDAO implements RepositorioDesafios {
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setString(1, desafio.lerTitulo());
             stmt.setString(2, desafio.lerDescricao());
-            stmt.setInt(3, desafio.lerPontuacao());
+            stmt.setInt(3, desafio.lerPontos());
             stmt.setString(4, desafio.lerCategoria());
             stmt.setInt(5, desafio.lerId());
             stmt.executeUpdate();
@@ -80,20 +79,6 @@ public class DesafioDAO implements RepositorioDesafios {
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao excluir desafio: " + e.getMessage());
-        }
-    }
-
-    public ArrayList<DesafioPratico> obterTodosDesafios() {
-        return listarTodos();
-    }
-
-    public void fecharConexao() {
-        try {
-            if (this.conexao != null && !this.conexao.isClosed()) {
-                this.conexao.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }

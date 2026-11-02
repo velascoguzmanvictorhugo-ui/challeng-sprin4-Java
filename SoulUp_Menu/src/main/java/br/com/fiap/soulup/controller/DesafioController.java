@@ -13,46 +13,35 @@ import java.util.ArrayList;
 @RequestMapping("/desafios")
 public class DesafioController {
 
-    private DesafioService desafioService;
+    private final DesafioService desafioService;
 
     public DesafioController() {
         this.desafioService = new DesafioService(new DesafioDAO());
     }
 
-    // 1. READ (GET)
     @GetMapping
     public ResponseEntity<ArrayList<DesafioPratico>> listar() {
-        ArrayList<DesafioPratico> lista = desafioService.listar();
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(desafioService.listar());
     }
 
-    // 2. CREATE (POST)
     @PostMapping
     public ResponseEntity<Object> cadastrar(@RequestBody DesafioPratico desafio) {
         try {
             desafioService.adicionar(desafio);
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(desafio);
+            return ResponseEntity.status(HttpStatus.CREATED).body(desafio);
         } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    // 3. UPDATE (PUT)
     @PutMapping
     public ResponseEntity<DesafioPratico> atualizar(@RequestBody DesafioPratico desafio) {
         desafioService.atualizar(desafio);
         return ResponseEntity.ok(desafio);
     }
 
-    // 4. DELETE (DELETE) - ?id=X
     @DeleteMapping
-    public ResponseEntity<Void> excluir(int id) {
+    public ResponseEntity<Void> excluir(@RequestParam int id) {
         desafioService.excluir(id);
         return ResponseEntity.noContent().build();
     }

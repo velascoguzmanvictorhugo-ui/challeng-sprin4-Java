@@ -23,7 +23,7 @@ public class AcaoPublicada {
 
         if (validacoesRecebidas >= 2) {
             consolidada = true;
-            grupo.adicionarPontos(desafio.lerPontuacao());
+            grupo.adicionarPontos(desafio.lerPontos());
         }
     }
 
@@ -37,7 +37,7 @@ public class AcaoPublicada {
     public String exibir() {
         String texto = "Acao do Grupo '" + grupo.lerNome() + "' no desafio '" + desafio.lerTitulo() + "'";
         if (consolidada == true) {
-            texto += " [CONSOLIDADA - " + desafio.lerPontuacao() + " pts creditados ao grupo]";
+            texto += " [CONSOLIDADA - " + desafio.lerPontos() + " pts creditados ao grupo]";
         } else {
             texto += " [PENDENTE - " + validacoesRecebidas + "/2 validacoes necessarias]";
         }

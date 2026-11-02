@@ -1,6 +1,5 @@
 package br.com.fiap.soulup.main;
 
-
 import br.com.fiap.soulup.dominio.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -9,6 +8,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner leitor = new Scanner(System.in);
         Avatar avatar = new Avatar("Bryan");
+
 
         Validador anaSilva = new Validador(1, "Ana Silva", "ana.silva@fiap.com.br");
         Validador carlosGomes = new Validador(2, "Carlos Gomes", "carlos.gomes@fiap.com.br");
@@ -19,6 +19,7 @@ public class Main {
         validadores.add(carlosGomes);
         validadores.add(beatrizSouza);
 
+
         Grupo ecoWarriors = new Grupo("Eco Warriors");
         Grupo greenForce = new Grupo("Green Force");
         Grupo sustentabilidadeSP = new Grupo("Sustentabilidade SP");
@@ -28,14 +29,16 @@ public class Main {
         grupos.add(greenForce);
         grupos.add(sustentabilidadeSP);
 
-        DesafioPratico limpezaParque = new DesafioPratico("Limpeza do Parque Ibirapuera", 1500);
-        DesafioPratico reciclarPlastico = new DesafioPratico("Reciclar 10kg de plastico", 800);
+
+        DesafioPratico desafio1 = new DesafioPratico(1, "Reducao de Desperdicio", "Evitar descartar alimentos proprios", 50, "Alimentacao");
+        DesafioPratico desafio2 = new DesafioPratico(2, "Compostagem Domestica", "Iniciar compostagem de residuos organicos", 80, "Reciclagem");
         DesafioEducacional cursoCompostagem = new DesafioEducacional("Curso Online de Compostagem", 500);
 
         ArrayList<Desafio> desafios = new ArrayList<>();
-        desafios.add(limpezaParque);
-        desafios.add(reciclarPlastico);
+        desafios.add(desafio1);
+        desafios.add(desafio2);
         desafios.add(cursoCompostagem);
+
 
         EmpresaParceira ecoTech = new EmpresaParceira("EcoTech", "Avenida Paulista, 1000");
         ecoTech.registrarDescontoCurso("Programacao Verde (EAD)");
@@ -51,7 +54,8 @@ public class Main {
         empresas.add(bioSolucoes);
         empresas.add(energiaLimpa);
 
-        AcaoPublicada acaoInicial = new AcaoPublicada(ecoWarriors, limpezaParque);
+
+        AcaoPublicada acaoInicial = new AcaoPublicada(ecoWarriors, desafio1);
         ArrayList<AcaoPublicada> acoes = new ArrayList<>();
         acoes.add(acaoInicial);
 
@@ -146,7 +150,7 @@ public class Main {
                                 Desafio d = desafios.get(i);
                                 System.out.println((i + 1) + ". " + d.lerTitulo());
                                 System.out.println("Tipo: " + d.tipoDesafio());
-                                System.out.println("Pontos que o grupo faturara ao concluir: " + d.lerPontuacao() + " pts");
+                                System.out.println("Pontos que o grupo faturara ao concluir: " + d.lerPontos() + " pts");
                             }
                             System.out.print("\nDigite o numero do desafio que deseja realizar (ou 0 para cancelar): ");
                             try {
@@ -158,7 +162,7 @@ public class Main {
                                     acoes.add(novaAcao);
                                     System.out.println("\n[SUCESSO] DESAFIO INICIADO!");
                                     System.out.println("Desafio Escolhido: " + desafioEscolhido.lerTitulo());
-                                    System.out.println("Pontos que serao faturados: " + desafioEscolhido.lerPontuacao() + " pontos!");
+                                    System.out.println("Pontos que serao faturados: " + desafioEscolhido.lerPontos() + " pontos!");
                                     System.out.println("\nRESUMO DA ACAO E DO GRUPO");
                                     System.out.println(novaAcao.exibir());
                                     System.out.println(grupoExecutor.exibirResumo());
@@ -222,7 +226,7 @@ public class Main {
                             Desafio d = desafios.get(i);
                             System.out.println((i + 1) + ". " + d.lerTitulo());
                             System.out.println("Tipo: " + d.tipoDesafio());
-                            System.out.println("Pontuacao base: " + d.lerPontuacao() + " pts");
+                            System.out.println("Pontuacao base: " + d.lerPontos() + " pts");
                         }
                         System.out.print("\nEscolha o numero do desafio desejado: ");
                         Desafio desafioEscolhido = null;
@@ -243,7 +247,7 @@ public class Main {
                         acoes.add(novaAcao);
 
                         System.out.println("\nComo o grupo deseja receber o beneficio?");
-                        System.out.println("  1. Pontuacao no Ranking (" + desafioEscolhido.lerPontuacao() + " pontos para o grupo)");
+                        System.out.println("  1. Pontuacao no Ranking (" + desafioEscolhido.lerPontos() + " pontos para o grupo)");
                         System.out.println("  2. Desconto e bolsa em Curso EAD de Capacitacao Profissional");
                         System.out.print("Sua escolha: ");
                         String escolhaBeneficio = leitor.nextLine();
@@ -253,7 +257,7 @@ public class Main {
                         if (escolhaBeneficio.equals("2")) {
                             System.out.println("Beneficio escolhido: Desconto/Bolsa em Curso EAD ao concluir.");
                         } else {
-                            System.out.println("Beneficio escolhido: " + desafioEscolhido.lerPontuacao() + " pontos para o Ranking Soul Up.");
+                            System.out.println("Beneficio escolhido: " + desafioEscolhido.lerPontos() + " pontos para o Ranking Soul Up.");
                         }
                         System.out.println("Status: " + novaAcao.exibir());
                     }
@@ -262,13 +266,18 @@ public class Main {
                 System.out.println("\nREGISTRAR NOVO DESAFIO");
                 System.out.print("Titulo do desafio: ");
                 String titulo = leitor.nextLine();
+                System.out.print("Descricao do desafio: ");
+                String descricao = leitor.nextLine();
+                System.out.print("Categoria (ex: Alimentacao, Reciclagem, Energia): ");
+                String categoria = leitor.nextLine();
                 System.out.print("Quantos pontos este desafio vai conceder? ");
                 try {
                     int pts = Integer.parseInt(leitor.nextLine());
-                    DesafioPratico d = new DesafioPratico(titulo, pts);
+                    int novoId = desafios.size() + 1;
+                    DesafioPratico d = new DesafioPratico(novoId, titulo, descricao, pts, categoria);
                     desafios.add(d);
                     System.out.println("\nDesafio registrado com sucesso!");
-                    System.out.println("Titulo: " + d.lerTitulo() + " | Pontos a conceder: " + d.lerPontuacao() + " pts.");
+                    System.out.println("ID: " + d.lerId() + " | Titulo: " + d.lerTitulo() + " | Pontos: " + d.lerPontos() + " pts.");
                 } catch (Exception e) {
                     System.out.println("Erro ao registrar desafio: " + e.getMessage());
                 }
