@@ -1,16 +1,27 @@
 package br.com.fiap.soulup.dominio;
 
 public class AcaoPublicada {
+    private int id; // Agregado para la base de datos
     private Grupo grupo;
     private Desafio desafio;
     private boolean consolidada;
     private int validacoesRecebidas;
 
-    public AcaoPublicada(Grupo grupo, Desafio desafio) {
+
+    public AcaoPublicada() {
+    }
+
+    public AcaoPublicada(int id, Grupo grupo, Desafio desafio) {
+        this.id = id;
         this.grupo = grupo;
         this.desafio = desafio;
         this.consolidada = false;
         this.validacoesRecebidas = 0;
+    }
+
+
+    public int lerId() {
+        return id;
     }
 
     public void receberValidacao(Validador validador) {
@@ -28,11 +39,16 @@ public class AcaoPublicada {
     }
 
     public Desafio lerDesafio() {
-        return desafio; }
+        return desafio;
+    }
+
     public Grupo lerGrupo() {
-        return grupo; }
+        return grupo;
+    }
+
     public boolean estaConsolidada() {
-        return consolidada; }
+        return consolidada;
+    }
 
     public String exibir() {
         String texto = "Acao do Grupo '" + grupo.lerNome() + "' no desafio '" + desafio.lerTitulo() + "'";

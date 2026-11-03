@@ -1,12 +1,24 @@
 package br.com.fiap.soulup.dominio;
 
 public class RecompensaEletricidade extends Recompensa {
-    public RecompensaEletricidade(int custoPontos) {
-        super(custoPontos);
+
+    private String mesReferencia;
+
+    public RecompensaEletricidade() {
+        super();
+    }
+
+    public RecompensaEletricidade(int id, String descricao, int custoPontos, String mesReferencia) {
+        super(id, descricao, custoPontos); // Llama al nuevo constructor del padre
+        this.mesReferencia = mesReferencia;
+    }
+
+    public String lerMesReferencia() {
+        return mesReferencia;
     }
 
     @Override
     public String aplicarRecompensa() {
-        return "SUCESSO: Pontos convertidos em desconto para abater na fatura de Eletricidade!";
+        return "Desconto na conta de luz aplicado para o mes " + mesReferencia + "!";
     }
 }

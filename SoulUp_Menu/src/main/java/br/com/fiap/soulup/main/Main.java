@@ -32,7 +32,7 @@ public class Main {
 
         DesafioPratico desafio1 = new DesafioPratico(1, "Reducao de Desperdicio", "Evitar descartar alimentos proprios", 50, "Alimentacao");
         DesafioPratico desafio2 = new DesafioPratico(2, "Compostagem Domestica", "Iniciar compostagem de residuos organicos", 80, "Reciclagem");
-        DesafioEducacional cursoCompostagem = new DesafioEducacional("Curso Online de Compostagem", 500);
+        DesafioEducacional cursoCompostagem = new DesafioEducacional(3, "Curso Online de Compostagem", "Aprenda a fazer adubo em casa", 500, "Educacional");
 
         ArrayList<Desafio> desafios = new ArrayList<>();
         desafios.add(desafio1);
@@ -55,7 +55,7 @@ public class Main {
         empresas.add(energiaLimpa);
 
 
-        AcaoPublicada acaoInicial = new AcaoPublicada(ecoWarriors, desafio1);
+        AcaoPublicada acaoInicial = new AcaoPublicada(1, ecoWarriors, desafio1);
         ArrayList<AcaoPublicada> acoes = new ArrayList<>();
         acoes.add(acaoInicial);
 
@@ -80,7 +80,9 @@ public class Main {
                 int opcaoNovoUsr = validadores.size() + 1;
                 System.out.println(opcaoNovoUsr + ". [CRIAR NOVO USUARIO]");
                 System.out.print("Sua escolha: ");
-                Validador validadorAtual = null;
+
+                Validador validadorAtual;
+
                 try {
                     int escolhaUsr = Integer.parseInt(leitor.nextLine());
                     if (escolhaUsr == opcaoNovoUsr) {
@@ -158,7 +160,10 @@ public class Main {
                                 if (inputDes >= 1 && inputDes <= desafios.size()) {
                                     Desafio desafioEscolhido = desafios.get(inputDes - 1);
                                     Grupo grupoExecutor = grupos.get(0);
-                                    AcaoPublicada novaAcao = new AcaoPublicada(grupoExecutor, desafioEscolhido);
+
+                                    int novoIdAcao = acoes.size() + 1;
+                                    AcaoPublicada novaAcao = new AcaoPublicada(novoIdAcao, grupoExecutor, desafioEscolhido);
+
                                     acoes.add(novaAcao);
                                     System.out.println("\n[SUCESSO] DESAFIO INICIADO!");
                                     System.out.println("Desafio Escolhido: " + desafioEscolhido.lerTitulo());
@@ -243,7 +248,8 @@ public class Main {
                             continue;
                         }
 
-                        AcaoPublicada novaAcao = new AcaoPublicada(grupoEscolhido, desafioEscolhido);
+                        int novoIdAcaoGrupo = acoes.size() + 1;
+                        AcaoPublicada novaAcao = new AcaoPublicada(novoIdAcaoGrupo, grupoEscolhido, desafioEscolhido);
                         acoes.add(novaAcao);
 
                         System.out.println("\nComo o grupo deseja receber o beneficio?");
@@ -284,7 +290,7 @@ public class Main {
             } else if (opcao == 4) {
                 System.out.println("\nSELECIONAR OU REGISTRAR EMPRESA PARCEIRA");
                 for (int i = 0; i < empresas.size(); i++) {
-                    System.out.println((i + 1) + ". Empresa: " + empresas.get(i).getNome());
+                    System.out.println((i + 1) + ". Empresa: " + empresas.get(i).lerNome());
                 }
                 int opcaoNovaEmp = empresas.size() + 1;
                 System.out.println(opcaoNovaEmp + ". REGISTRAR NOVA EMPRESA");
@@ -297,7 +303,10 @@ public class Main {
                         String nomeE = leitor.nextLine();
                         System.out.print("Endereco: ");
                         String endE = leitor.nextLine();
+
+
                         empAtual = new EmpresaParceira(nomeE, endE);
+
                         empresas.add(empAtual);
                         System.out.println("Empresa registrada com sucesso!");
                     } else if (escolhaEmp >= 1 && escolhaEmp <= empresas.size()) {
@@ -350,9 +359,9 @@ public class Main {
         String recOp = leitor.nextLine();
         Recompensa r = null;
         if (recOp.equals("1")) {
-            r = new RecompensaEletricidade(50);
+            r = new RecompensaEletricidade(1, "Desconto na conta de luz", 50, "Novembro");
         } else if (recOp.equals("2")) {
-            r = new RecompensaCurso(30, "Gestao Ambiental e Sustentabilidade");
+            r = new RecompensaCurso(2, "Curso Universitario", 30, "Gestao Ambiental e Sustentabilidade");
         }
         if (r != null) {
             try {
