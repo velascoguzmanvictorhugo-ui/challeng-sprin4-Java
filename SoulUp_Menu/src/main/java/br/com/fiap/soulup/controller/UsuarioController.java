@@ -1,6 +1,8 @@
 package br.com.fiap.soulup.controller;
 
 import br.com.fiap.soulup.dao.UsuarioDAO;
+import br.com.fiap.soulup.dao.AccountDAO;
+import br.com.fiap.soulup.service.PasswordHash;
 import br.com.fiap.soulup.dominio.Validador;
 import br.com.fiap.soulup.service.UsuarioService;
 import org.springframework.http.HttpStatus;
@@ -24,19 +26,22 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.listar());
     }
 
+    public record RegisterRequest(String nome, String email, String senha) {}
+
     @PostMapping
-    public ResponseEntity salvar(@RequestBody Validador usuario) {
+    public ResponseEntity<?> salvar(@RequestBody RegisterRequest usuario) {
         try {
-            usuarioService.adicionar(usuario);
+            if (usuario.nome() == null || usuario.nome().trim().length() < 2 || usuario.nome().length() > 100 || usuario.email() == null || usuario.email().length() > 254 || !usuario.email().trim().matches("[^\\s@]+@[^\\s@]+\\.[^\\s@]+")) return ResponseEntity.badRequest().build();
+            var account = new AccountDAO().register(usuario.nome().trim(), usuario.email().trim().toLowerCase(java.util.Locale.ROOT), PasswordHash.create(usuario.senha()));
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(usuario);
+                    .body(account);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(e.getMessage().contains("cadastrado") ? HttpStatus.CONFLICT : HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(e.getMessage());
+                    .body("Cadastro indisponivel no momento.");
         }
     }
 
@@ -48,7 +53,7 @@ public class UsuarioController {
 
 
         @DeleteMapping
-        public ResponseEntity<Void> excluir(int id) {
+        public ResponseEntity<Void> excluir(@RequestParam int id) {
             usuarioService.excluir(id);
             return ResponseEntity.noContent().build();
         }

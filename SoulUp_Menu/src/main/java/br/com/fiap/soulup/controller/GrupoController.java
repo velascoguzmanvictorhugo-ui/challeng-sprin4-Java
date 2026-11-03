@@ -38,7 +38,7 @@ public class GrupoController {
 
 
     @DeleteMapping
-    public ResponseEntity<Void> excluir(int id) {
+    public ResponseEntity<Void> excluir(@RequestParam int id) {
         grupoService.excluir(id);
         return ResponseEntity.noContent().build();
     }
