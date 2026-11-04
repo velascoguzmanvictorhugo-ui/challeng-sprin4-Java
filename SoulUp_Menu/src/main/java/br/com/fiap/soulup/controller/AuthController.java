@@ -39,7 +39,7 @@ public class AuthController {
     @PostMapping("/funcionario")
     public ResponseEntity<?> loginFuncionario(@RequestBody FuncionarioRequest body, HttpServletRequest request) {
         // Define aquí la contraseña fija que usarán los funcionarios
-        String senhaFixa = "soulup123";
+        String senhaFixa = "123456789";
 
         if (body.senha() == null || !body.senha().equals(senhaFixa)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
