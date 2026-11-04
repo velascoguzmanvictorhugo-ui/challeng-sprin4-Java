@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AccountDAO accounts;
     private static final String DUMMY_HASH = PasswordHash.create("invalid-account-placeholder");
+
     public AuthController() { this(new AccountDAO()); }
     AuthController(AccountDAO accounts) { this.accounts = accounts; }
 
     public record LoginRequest(String email, String senha) {}
+    public record FuncionarioRequest(String senha) {}
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest body, HttpServletRequest request) {
@@ -31,6 +33,26 @@ public class AuthController {
         session.setAttribute("soulupUserId", credential.account().getId());
         session.setMaxInactiveInterval(1800);
         return ResponseEntity.ok(credential.account());
+    }
+
+    // Nuevo endpoint para validar la contraseña fija de la sección "Acesso Funcionário"
+    @PostMapping("/funcionario")
+    public ResponseEntity<?> loginFuncionario(@RequestBody FuncionarioRequest body, HttpServletRequest request) {
+        // Define aquí la contraseña fija que usarán los funcionarios
+        String senhaFixa = "soulup123";
+
+        if (body.senha() == null || !body.senha().equals(senhaFixa)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        HttpSession previous = request.getSession(false);
+        if (previous != null) previous.invalidate();
+
+        HttpSession session = request.getSession(true);
+        session.setAttribute("soulupFuncionarioAuth", true);
+        session.setMaxInactiveInterval(1800);
+
+        return ResponseEntity.ok().body("Acesso autorizado com sucesso.");
     }
 
     @GetMapping("/me")
