@@ -18,7 +18,8 @@ public class GrupoDAO implements RepositorioGrupos {
 
     @Override
     public void adicionar(Grupo grupo) {
-        String sql = "INSERT INTO tb_grupo (nome, pontos, data_criacao) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO tb_grupo (id_grupo, nome, pontos, data_criacao) " +
+                "VALUES ((SELECT NVL(MAX(id_grupo), 0) + 1 FROM tb_grupo), ?, ?, ?)";
 
         try (Connection conexao = new ConnectionFactory().getConnection();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
