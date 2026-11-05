@@ -35,10 +35,8 @@ public class AuthController {
         return ResponseEntity.ok(credential.account());
     }
 
-    // Nuevo endpoint para validar la contraseña fija de la sección "Acesso Funcionário"
-    @PostMapping("/funcionario")
-    public ResponseEntity<?> loginFuncionario(@RequestBody FuncionarioRequest body, HttpServletRequest request) {
-        // Define aquí la contraseña fija que usarán los funcionarios
+    @PostMapping("/acesso-funcionario")
+    public ResponseEntity<?> loginAcessoFuncionario(@RequestBody FuncionarioRequest body, HttpServletRequest request) {
         String senhaFixa = "123456789";
 
         if (body.senha() == null || !body.senha().equals(senhaFixa)) {
