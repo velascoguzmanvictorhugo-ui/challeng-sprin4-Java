@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
 public class AuthController {
     private final AccountDAO accounts;
     private static final String DUMMY_HASH = PasswordHash.create("invalid-account-placeholder");
@@ -21,7 +20,7 @@ public class AuthController {
     public record LoginRequest(String email, String senha) {}
     public record FuncionarioRequest(String senha) {}
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest body, HttpServletRequest request) {
         HttpSession previous = request.getSession(false);
         if (previous != null) previous.invalidate();
@@ -53,7 +52,7 @@ public class AuthController {
         return ResponseEntity.ok().body("Acesso autorizado com sucesso.");
     }
 
-    @GetMapping("/me")
+    @GetMapping("/auth/me")
     public ResponseEntity<Validador> current(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null || !(session.getAttribute("soulupUserId") instanceof Integer id)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -62,7 +61,7 @@ public class AuthController {
         return ResponseEntity.ok(account);
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/auth/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) session.invalidate();
